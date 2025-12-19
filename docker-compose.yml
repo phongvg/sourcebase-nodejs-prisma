@@ -42,7 +42,6 @@ services:
       redis:
         condition: service_healthy
     restart: unless-stopped
-    profiles: ["tools"]
 
 volumes:
   mongo-data:
