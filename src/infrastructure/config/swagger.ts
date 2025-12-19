@@ -163,6 +163,46 @@ const swaggerDefinition = {
           }
         }
       },
+      RefreshTokenRequest: {
+        type: 'object',
+        required: ['refreshToken'],
+        properties: {
+          refreshToken: {
+            type: 'string',
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+          }
+        }
+      },
+      RefreshTokenResponse: {
+        type: 'object',
+        properties: {
+          success: {
+            type: 'boolean',
+            example: true
+          },
+          code: {
+            type: 'string',
+            example: 'OK'
+          },
+          message: {
+            type: 'string',
+            example: 'Thành công'
+          },
+          data: {
+            type: 'object',
+            properties: {
+              accessToken: {
+                type: 'string',
+                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+              },
+              refreshToken: {
+                type: 'string',
+                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+              }
+            }
+          }
+        }
+      },
       MeResponse: {
         type: 'object',
         properties: {

@@ -13,6 +13,7 @@ import { env } from '~/infrastructure/config/env'
 import { RegisterLocalUseCase } from '~/application/use-cases/auth/register-local.usecase'
 import { LoginLocalUseCase } from '~/application/use-cases/auth/login-local.usecase'
 import { LoginGoogleUseCase } from '~/application/use-cases/auth/login-google.usecase'
+import { RefreshTokenUseCase } from '~/application/use-cases/auth/refresh-token.usecase'
 import { LogoutUseCase } from '~/application/use-cases/auth/logout.usecase'
 import { GetInfoUseCase } from '~/application/use-cases/auth/get-me.usecase'
 
@@ -31,6 +32,7 @@ export class Container {
   public readonly registerLocalUseCase: RegisterLocalUseCase
   public readonly loginLocalUseCase: LoginLocalUseCase
   public readonly loginGoogleUseCase: LoginGoogleUseCase
+  public readonly refreshTokenUseCase: RefreshTokenUseCase
   public readonly logoutUseCase: LogoutUseCase
   public readonly getInfoUseCase: GetInfoUseCase
 
@@ -59,6 +61,11 @@ export class Container {
       this.tokenService,
       this.sessionStore
     )
+    this.refreshTokenUseCase = new RefreshTokenUseCase(
+      this.userRepository,
+      this.tokenService,
+      this.sessionStore
+    )
     this.logoutUseCase = new LogoutUseCase(this.sessionStore)
     this.getInfoUseCase = new GetInfoUseCase(this.userRepository)
 
@@ -67,6 +74,7 @@ export class Container {
       this.registerLocalUseCase,
       this.loginLocalUseCase,
       this.loginGoogleUseCase,
+      this.refreshTokenUseCase,
       this.logoutUseCase,
       this.getInfoUseCase
     )

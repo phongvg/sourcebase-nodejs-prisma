@@ -29,16 +29,16 @@ export class LoginLocalUseCase {
     const isPasswordValid = await this.passwordHasher.compare(payload.password, user.password)
     if (!isPasswordValid) throw new AppError(ERROR_CODE.INVALID_CREDENTIALS)
 
-    // Tạo session ID mới 
+    // Tạo session ID mới
     const sessionId = randomUUID()
 
-    // Ghi đè session vào Redis 
+    // Ghi đè session vào Redis
     await this.sessionStore.set(user.id, sessionId)
 
     // Cập nhật last login time
     await this.userRepository.updateLastLogin(user.id)
 
-    // Generate tokens 
+    // Generate tokens
     const accessToken = await this.tokenService.generateAccessToken({
       userId: user.id,
       role: user.role,

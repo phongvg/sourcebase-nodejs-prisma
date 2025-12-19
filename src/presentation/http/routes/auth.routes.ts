@@ -3,6 +3,7 @@ import { AuthController } from '~/presentation/http/controllers/auth.controller'
 import { validate } from '~/presentation/http/middlewares/validate.middleware'
 import { RegisterRequestSchema } from '~/application/dtos/auth/register.dto'
 import { LoginLocalRequestSchema, LoginGoogleRequestSchema } from '~/application/dtos/auth/login.dto'
+import { RefreshTokenRequestSchema } from '~/application/dtos/auth/refresh.dto'
 import { TokenService } from '~/application/ports/services/token.port'
 import { SessionStore } from '~/application/ports/services/session-store.port'
 import { createAuthMiddleware } from '~/presentation/http/middlewares/auth.middleware'
@@ -101,6 +102,35 @@ export function createAuthRoutes(
    *               $ref: '#/components/schemas/Error'
    */
   router.post('/login/google', validate(LoginGoogleRequestSchema), authController.loginGoogle)
+
+  /**
+   * @swagger
+   * /api/auth/refresh:
+   *   post:
+   *     tags: [Auth]
+   *     summary: Làm mới access token
+   *     description: Sử dụng refresh token để lấy cặp access token và refresh token mới
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/RefreshTokenRequest'
+   *     responses:
+   *       200:
+   *         description: Refresh thành công
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/RefreshTokenResponse'
+   *       401:
+   *         description: Refresh token không hợp lệ hoặc đã hết hạn
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Error'
+   */
+  router.post('/refresh', validate(RefreshTokenRequestSchema), authController.refresh)
 
   /**
    * @swagger

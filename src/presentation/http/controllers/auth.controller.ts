@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express'
 import { RegisterLocalUseCase } from '~/application/use-cases/auth/register-local.usecase'
 import { LoginLocalUseCase } from '~/application/use-cases/auth/login-local.usecase'
 import { LoginGoogleUseCase } from '~/application/use-cases/auth/login-google.usecase'
+import { RefreshTokenUseCase } from '~/application/use-cases/auth/refresh-token.usecase'
 import { LogoutUseCase } from '~/application/use-cases/auth/logout.usecase'
 import { GetInfoUseCase } from '~/application/use-cases/auth/get-me.usecase'
 import { sendOk } from '~/shared/http/response'
@@ -15,6 +16,7 @@ export class AuthController {
     private readonly registerLocalUseCase: RegisterLocalUseCase,
     private readonly loginLocalUseCase: LoginLocalUseCase,
     private readonly loginGoogleUseCase: LoginGoogleUseCase,
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly getInfoUseCase: GetInfoUseCase
   ) {}
@@ -53,6 +55,19 @@ export class AuthController {
       sendOk(res, {
         data: result,
         message: MESSAGE.LOGIN_SUCCESS
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = await this.refreshTokenUseCase.execute(req.body)
+
+      sendOk(res, {
+        data: result,
+        message: MESSAGE.OK
       })
     } catch (error) {
       next(error)
